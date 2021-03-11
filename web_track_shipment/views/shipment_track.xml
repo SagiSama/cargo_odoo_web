@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="shipment_track" model="website.menu">
+        <field name="name">Track your shipment</field>
+        <field name="url">/track_shipment_form</field>
+        <field name="parent_id" ref="website.main_menu"></field>
+        <field name="sequence">55</field>
+    </record>
+
+    <template id="track_shipment_form" name="Shipment Track">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="oe_structure">
+                    <div class="container s_title pt32 pb32 o_colored_level">
+                        <form role="form" action="/track_shipment" method="POST">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"></input>
+                            <div class="input-group mb-3">
+                                <input type="text" class="form-control" placeholder="Shipment code EG SP001"
+                                       name="shipment_code" t-att-value="shipment_code" id="shipment_code"
+                                       aria-label="Recipient's username" aria-describedby="basic-addon2" required="required"></input>
+                                <div class="input-group-append">
+                                    <button class="btn btn-outline-secondary" type="submit">Search</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="container s_title pt32 pb32 o_colored_leve">
+                        <t t-if="shipment_details">
+                            <tr t-foreach="shipment_details" t-as="shipment_detail">
+                                <p>code is: <t t-esc="shipment_detail.id"/> </p>
+                                <p>name is: <t t-esc="shipment_detail.name"/> </p>
+                                <p>status is: <t t-esc="shipment_detail.company_name"/> </p>
+                            </tr>
+                        </t>
+                        <t t-if="not shipment_details and not initial_load">
+                            <p>There is no shipment</p>
+                            <p>Please check your shipment code!</p>
+                        </t>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+</odoo>

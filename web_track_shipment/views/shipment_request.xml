@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="shipment_request" model="website.menu">
+        <field name="name">Request shipment</field>
+        <field name="url">/request_shipment_form</field>
+        <field name="parent_id" ref="website.main_menu"></field>
+        <field name="sequence">55</field>
+    </record>
+
+    <template id="request_shipment_form" name="Shipment Request">
+        <t t-call="website.layout">
+            <div id="wrap">
+                <div class="oe_structure">
+                    <div class="o_container_small s_title pt32 pb32 o_colored_level">
+                        <form role="form" action="/request_shipment" method="POST">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"></input>
+                            <div class="form-group">
+                                <label class="control-label">Name</label>
+                                <input type="text" class="form-control" placeholder="Name"
+                                       name="name" t-att-value="name" id="name" required="required"></input>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Phone</label>
+                                <input type="phone" class="form-control" placeholder="phone"
+                                       name="phone" t-att-value="phone" id="phone" required="required"></input>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Weight</label>
+                                <input type="number" class="form-control" placeholder="Weight"
+                                       name="weight" t-att-value="weight" id="weight" required="required"></input>
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Object</label>
+                                <textarea class="form-control" placeholder="object"
+                                       name="object" t-att-value="object" id="object" required="required"></textarea>
+                            </div>
+                            <div class="input-group">
+                                <button class="btn btn-outline-secondary" type="submit">Request</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </t>
+    </template>
+
+    <record id="request_shipment_response" model="website.page">
+        <field name="name">Register shipment request</field>
+        <field name="type">qweb</field>
+        <field name="url">/request_shipment_response</field>
+        <field name="website_published">True</field>
+        <field name="key">web_track_shipment.request_shipment_response</field>
+        <field name="arch" type="xml">
+            <t nam="Thanks" t-name="web_track_shipment.request_shipment_response">
+                <t t-call="website.layout">
+                    <div id="wrap">
+                        <div class="oe_structure">
+                            <div class="container s_title pt32 pb32 o_colored_leve">
+                                <t t-if="shipment_request_res">
+                                    <p>Thank you very much, we will contact you soon</p>
+                                </t>
+                                <t t-if="not shipment_request_res">
+                                    <p>Something went wrong, please call our office, thank you very much</p>
+                                </t>
+                            </div>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </field>
+    </record>
+</odoo>
